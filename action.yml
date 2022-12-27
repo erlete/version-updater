@@ -23,5 +23,5 @@ runs:
   using: "node16"
   main: "dist/index.js"
 branding:
-  icon: 'chevrons-up'
-  color: 'gray-dark'
+  icon: "chevrons-up"
+  color: "gray-dark"
