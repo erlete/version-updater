@@ -5,10 +5,10 @@ inputs:
     description: 'Email used for git commits.'
     required: false
     default: 'action@github.com'
-  git-username:
-    description: 'Username used for git commits.'
+  git-name:
+    description: 'Name used for git commits.'
     required: false
-    default: 'GitHub Actions'
+    default: 'GitHub Action'
   target-version:
     description: 'The version to update the metadata file to.'
     required: true

@@ -4116,7 +4116,7 @@ const main = async () => {
     try {
         // Retrieve inputs:
         const git_email = core.getInput('git-email');
-        const git_username = core.getInput('git-username');
+        const git_name = core.getInput('git-name');
         let target_version = core.getInput('target-version');
         const target_file = core.getInput('target-file');
         const target_branch = core.getInput('target-branch');
@@ -4131,7 +4131,7 @@ const main = async () => {
 
         // Configure git:
         await exec.exec('git', ['config', '--global', 'user.email', git_email]);
-        await exec.exec('git', ['config', '--global', 'user.name', git_username]);
+        await exec.exec('git', ['config', '--global', 'user.name', git_name]);
 
         // Commit and push:
         await exec.exec('git', ['commit', target_file, '-m', `Update version to ${target_version}`]);

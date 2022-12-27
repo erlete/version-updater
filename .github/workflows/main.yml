@@ -1,6 +1,9 @@
-name: Self execution
+name: Action test
 
-on: [push]
+on:
+  push:
+    branches:
+      - dev
 
 jobs:
 
@@ -16,8 +19,6 @@ jobs:
       - name: Version updater action
         uses: ./
         with:
-          git-email: "test@example.com"
-          git-username: "Test User"
-          target-version: "1.0.0"
-          target-file: "sample.json"
+          target-version: "1.0.${{ github.run_id }}"
+          target-file: ".github/sample.json"
           target-branch: "dev"
