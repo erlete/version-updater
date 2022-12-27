@@ -9507,6 +9507,14 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 6946:
+/***/ ((module) => {
+
+module.exports = eval("require")("@actions/exec");
+
+
+/***/ }),
+
 /***/ 2431:
 /***/ ((module) => {
 
@@ -9686,6 +9694,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(5127);
 const github = __nccwpck_require__(3134);
+const exec = __nccwpck_require__(6946);
 const fs = __nccwpck_require__(7147);
 
 const main = async () => {
