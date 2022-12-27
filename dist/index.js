@@ -10986,6 +10986,7 @@ const main = async () => {
         const git_username = core.getInput('git-username');
         let target_version = core.getInput('target-version');
         const target_file = core.getInput('target-file');
+        const target_branch = core.getInput('target-branch');
 
         // generate three random numbers from 0-9
         const random1 = Math.floor(Math.random() * 10);
