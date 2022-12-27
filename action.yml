@@ -8,7 +8,7 @@ inputs:
   git-name:
     description: 'Name used for git commits.'
     required: false
-    default: 'GitHub Actions'
+    default: 'GitHub Action'
   target-version:
     description: 'The version to update the metadata file to.'
     required: true
