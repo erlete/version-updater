@@ -1,0 +1,23 @@
+name: Self execution
+
+on: [push]
+
+jobs:
+
+  version-update:
+
+    runs-on: ubuntu-latest
+    name: Version update
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Version updater action
+        uses: ./
+        with:
+          git-email: "test@example.com"
+          git-username: "Test User"
+          target-version: "1.0.0"
+          target-file: "sample.json"
+          target-branch: "dev"

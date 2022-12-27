@@ -9,6 +9,15 @@ inputs:
     description: 'Username used for git commits.'
     required: false
     default: 'GitHub Actions'
+  target-version:
+    description: 'The version to update the metadata file to.'
+    required: true
+  target-file:
+    description: 'The file that contains package metadata.'
+    required: true
+  target-branch:
+    description: 'The branch to commit the update to.'
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'
