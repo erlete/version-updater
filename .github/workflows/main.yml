@@ -20,3 +20,4 @@ jobs:
           git-username: "Test User"
           target-version: "1.0.0"
           target-file: "sample.json"
+          target-branch: "dev"
