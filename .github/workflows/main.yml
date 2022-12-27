@@ -18,3 +18,5 @@ jobs:
         with:
           git-email: "test@example.com"
           git-username: "Test User"
+          target-version: "1.0.0"
+          target-file: "sample.json"
