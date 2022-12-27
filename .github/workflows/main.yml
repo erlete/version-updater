@@ -13,16 +13,6 @@ jobs:
     name: Version update
 
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-
-      - name: Generate random reference tag
-        id: generate-tag
-        env:
-          RANDOM: ${{ github.run_id }}
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -31,6 +21,6 @@ jobs:
         with:
           git-email: "test@example.com"
           git-username: "Test User"
-          target-version: "1.0.${{ steps.generate-tag.outputs.tag }}"
+          target-version: "1.0.${{ github.run_id }}"
           target-file: ".github/sample.json"
           target-branch: "dev"
