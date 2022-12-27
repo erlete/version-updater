@@ -19,8 +19,6 @@ jobs:
       - name: Version updater action
         uses: ./
         with:
-          git-email: "test@example.com"
-          git-username: "Test User"
           target-version: "1.0.${{ github.run_id }}"
           target-file: ".github/sample.json"
           target-branch: "dev"
