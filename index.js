@@ -5,7 +5,7 @@ const fs = require('fs');
 try {
     const git_email = core.getInput('git-email');
     const git_username = core.getInput('git-username');
-    const target_version = core.getInput('target-version');
+    let target_version = core.getInput('target-version');
     const target_file = core.getInput('target-file');
 
     // generate three random numbers from 0-9
@@ -22,7 +22,7 @@ try {
 
     // open the metadata file and load its contents into a string
 
-    const metadata = fs.readFileSync(target_file, 'utf8');
+    let metadata = fs.readFileSync(target_file, 'utf8');
     console.log(`Metadata file contents: ${metadata}`);
 
     // replace the match for the \"version\":(\s*)\"(.*)\" expression with \"version\": \"{target_version}\"
