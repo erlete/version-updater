@@ -9,9 +9,6 @@ inputs:
     description: 'Username used for git commits.'
     required: false
     default: 'GitHub Actions'
-outputs:
-  success:
-    description: 'The code that determines whether the action succeeded or not'
 runs:
   using: 'node16'
   main: 'dist/index.js'
