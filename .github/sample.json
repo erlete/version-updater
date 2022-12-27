@@ -1,6 +1,6 @@
 {
     "name": "version-updater",
-    "version": "1.0.3788431074",
+    "version": "1.0.3788495245",
     "description": "Simple version updater for GitHub Actions.",
     "main": "index.js",
     "scripts": {
