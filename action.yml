@@ -5,8 +5,8 @@ inputs:
     description: 'Email used for git commits.'
     required: false
     default: 'action@github.com'
-  git-username:
-    description: 'Username used for git commits.'
+  git-name:
+    description: 'Name used for git commits.'
     required: false
     default: 'GitHub Actions'
   target-version:
