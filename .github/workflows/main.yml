@@ -1,24 +1,24 @@
-name: Action test
+#name: Action test
 
-on:
-  push:
-    branches:
-      - dev
+#on:
+#  push:
+#    branches:
+#      - dev
 
-jobs:
+#jobs:
 
-  version-update:
+#  version-update:
 
-    runs-on: ubuntu-latest
-    name: Version update
+#    runs-on: ubuntu-latest
+#    name: Version update
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
 
-      - name: Version updater action
-        uses: ./
-        with:
-          target-version: "1.0.${{ github.run_id }}"
-          target-file: ".github/sample.json"
-          target-branch: "dev"
+#      - name: Version updater action
+#        uses: ./
+#        with:
+#          target-version: "1.0.${{ github.run_id }}"
+#          target-file: ".github/sample.json"
+#          target-branch: "dev"
