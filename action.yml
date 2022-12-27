@@ -1,23 +1,27 @@
-name: 'Version Updater'
-description: 'Updates the version of a package metadata file'
+name: "Version Updater"
+author: "Paulo Sánchez"
+description: "Updates the version of a package metadata file"
 inputs:
   git-email:
-    description: 'Email used for git commits.'
+    description: "Email used for git commits."
     required: false
-    default: 'action@github.com'
+    default: "action@github.com"
   git-name:
-    description: 'Name used for git commits.'
+    description: "Name used for git commits."
     required: false
-    default: 'GitHub Action'
+    default: "GitHub Action"
   target-version:
-    description: 'The version to update the metadata file to.'
+    description: "The version to update the metadata file to."
     required: true
   target-file:
-    description: 'The file that contains package metadata.'
+    description: "The file that contains package metadata."
     required: true
   target-branch:
-    description: 'The branch to commit the update to.'
+    description: "The branch to commit the update to."
     required: true
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
+branding:
+  icon: 'chevrons-up'
+  color: 'gray-dark'
