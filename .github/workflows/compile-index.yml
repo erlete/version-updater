@@ -1,0 +1,40 @@
+name: Compile index.js
+
+on:
+  push:
+    paths:
+      - "index.js"
+    branches:
+      - dev
+
+jobs:
+
+  compile-index:
+
+    runs-on: ubuntu-latest
+    name: Index compilation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile index.js
+        run: ncc build index.js --license licenses.txt
+
+      - name: Config git
+        run: |
+          git config --global user.email "dev.szblzpaulo@gmail.com"
+          git config --global user.name "Paulo Sánchez"
+
+      - name: Commit index.js compiled file
+        run: |
+          git commit -am "Compile index.js"
+          git push
