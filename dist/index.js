@@ -4114,7 +4114,7 @@ const fs = __nccwpck_require__(147);
 
 
 const REGEXPRS = {
-    "package.json": /\"version\":(\s*)\"(.*)\"/,
+    "package.json": /"version"(\s+|\s?):(\s+|\s?)"(([0-9]+(\.?))+)"/,
     "pyproject.toml": /version(\s+|\s?)=(\s+|\s?)("?)(([0-9]+(\.?))+)("?)/
 }
 
