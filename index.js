@@ -38,6 +38,27 @@ async function updatePyProjectToml(target_version) {
     updateFile(filename, `version = "${target_version}"`);
 }
 
+function ensureReleaseEvent(event_name, event_type) {
+    if (event_name !== "release") {
+        throw new Error(`The "${event_name}" event is not supported. Only "release" events are.`);
+    }
+    if (event_type !== "published") {
+        throw new Error(`The "${event_type}" release event is not supported. Only "published" release events are.`);
+    }
+}
+
+function ensureValidTag(ref_type, ref_name, ref_protected) {
+    if (ref_type !== "tag") {
+        throw new Error(`Reference type "${ref_type}" does not refer to a release. Only "tag" reference types are supported.`);
+    }
+    if (!ref_name.match(/^refs\/tags\/v[0-9]+(\.[0-9]+)*$/)) {
+        throw new Error(`Reference name "${ref_name}" does not match regular expression "refs/tags/v[0-9]+(\.[0-9]+)*".`);
+    }
+    if (ref_protected !== "false") {
+        throw new Error(`The reference is protected. Only unprotected references are supported.`);
+    }
+}
+
 const main = async () => {
     try {
         // Relevant metadata definition:
