@@ -70,6 +70,7 @@ const main = async () => {
         await exec.exec("git", ["config", "--global", "user.name", git_name]);
 
         // Commit and push:
+        await exec.exec("git", ["add", '.']);
         await exec.exec("git", ["commit", "-am", `Update version to ${target_version}`]);
         await exec.exec("git", ["push", "origin", `HEAD:${target_branch}`]);
 
