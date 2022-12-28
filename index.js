@@ -4,10 +4,16 @@ const fs = require("fs");
 
 
 const REGEXPRS = {
-    "package.json": /\"version\":(\s*)\"(.*)\"/,
-    "pyproject.toml": /version = \"(.*)\"/
+    "package.json": /"version"(\s+|\s?):(\s+|\s?)"(([0-9]+(\.?))+)"/,
+    "pyproject.toml": /version(\s+|\s?)=(\s+|\s?)("?)(([0-9]+(\.?))+)("?)/
 }
 
+
+function ensureFileExists(filename) {
+    if (!fs.existsSync(filename)) {
+        throw new Error(`File not found: ${filename}`);
+    }
+}
 
 function updateFile(filename, replacement) {
     let data = fs.readFileSync(filename, "utf8");
@@ -41,6 +47,9 @@ const main = async () => {
         const target_file = core.getInput("target-file");
         const target_branch = core.getInput("target-branch");
 
+        // Ensure file exists:
+        ensureFileExists(target_file);
+
         // Format tag:
         target_version = target_version.replace(/^refs\/tags\/v/, "");
 
@@ -61,6 +70,7 @@ const main = async () => {
         await exec.exec("git", ["config", "--global", "user.name", git_name]);
 
         // Commit and push:
+        await exec.exec("git", ["add", "--all"]);
         await exec.exec("git", ["commit", "-am", `Update version to ${target_version}`]);
         await exec.exec("git", ["push", "origin", `HEAD:${target_branch}`]);
 
