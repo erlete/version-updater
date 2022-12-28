@@ -9,6 +9,12 @@ const REGEXPRS = {
 }
 
 
+function ensureFileExists(filename) {
+    if (!fs.existsSync(filename)) {
+        throw new Error(`File not found: ${filename}`);
+    }
+}
+
 function updateFile(filename, replacement) {
     let data = fs.readFileSync(filename, "utf8");
     data = data.replace(REGEXPRS[filename], replacement);
@@ -40,6 +46,9 @@ const main = async () => {
         let target_version = core.getInput("target-version");
         const target_file = core.getInput("target-file");
         const target_branch = core.getInput("target-branch");
+
+        // Ensure file exists:
+        ensureFileExists(target_file);
 
         // Format tag:
         target_version = target_version.replace(/^refs\/tags\/v/, "");
