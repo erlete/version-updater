@@ -40,6 +40,21 @@ async function updatePyProjectToml(target_version) {
 
 const main = async () => {
     try {
+        // Relevant metadata definition:
+        const payload = github.context.payload;
+        const metadata = {
+            "author": process.env.GITHUB_TRIGGERING_ACTOR,
+            "branch": payload.release.target_commitish,
+            "repository": process.env.GITHUB_REPOSITORY,
+            "token": process.env.GITHUB_TOKEN,
+            "event_name": process.env.GITHUB_EVENT_NAME,
+            "event_type": payload.action,
+            "ref_name":process.env.GITHUB_REF_NAME,
+            "ref_type": process.env.GITHUB_REF_TYPE,
+            "ref_protection": process.env.GITHUB_REF_PROTECTED,
+            "release_name": payload.release.name,
+        };
+
         // Retrieve inputs:
         const git_email = core.getInput("git-email");
         const git_name = core.getInput("git-name");
@@ -65,14 +80,17 @@ const main = async () => {
                 throw new Error(`Unsupported file: ${target_file}`);
         }
 
+        // Set remote repository with token access:
+        const remote = `https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+
         // Configure git:
-        await exec.exec("git", ["config", "--global", "user.email", git_email]);
-        await exec.exec("git", ["config", "--global", "user.name", git_name]);
+        await exec.exec("git", ["config", "user.email", git_email]);
+        await exec.exec("git", ["config", "user.name", git_name]);
 
         // Commit and push:
         await exec.exec("git", ["add", "--all"]);
         await exec.exec("git", ["commit", "-am", `Update version to ${target_version}`]);
-        await exec.exec("git", ["push", "origin", `HEAD:${target_branch}`]);
+        await exec.exec('git', ['push', remote, `HEAD:${metadata.branch}`, '--force']);
 
     } catch (error) {
         core.setFailed(error.message);
