@@ -21,21 +21,21 @@ function updateFile(filename, replacement) {
     fs.writeFileSync(filename, data, "utf8");
 }
 
-async function updatePackageJson(target_version) {
+async function updatePackageJson(tag) {
     const filename = "package.json";
 
     // Update package.json version:
-    updateFile(filename, `"version": "${target_version}"`);
+    updateFile(filename, `"version": "${tag}"`);
 
     // Update package-lock.json version:
     await exec.exec("npm", ["install"]);
 }
 
-async function updatePyProjectToml(target_version) {
+async function updatePyProjectToml(tag) {
     const filename = "pyproject.toml";
 
     // Update pyproject.toml version:
-    updateFile(filename, `version = "${target_version}"`);
+    updateFile(filename, `version = "${tag}"`);
 }
 
 function ensureReleaseEvent(event_name, event_type) {
@@ -76,26 +76,28 @@ const main = async () => {
             "release_name": payload.release.name,
         };
 
+        // Validate conditions:
+        ensureReleaseEvent(metadata.event_name, metadata.event_type);
+        ensureValidTag(metadata.ref_type, metadata.ref_name, metadata.ref_protection);
+
+        // Extract numeric format tag:
+        const tag = metadata.ref_name.substring(1);
+
         // Retrieve inputs:
         const git_email = core.getInput("git-email");
         const git_name = core.getInput("git-name");
-        let target_version = core.getInput("target-version");
         const target_file = core.getInput("target-file");
-        const target_branch = core.getInput("target-branch");
 
         // Ensure file exists:
         ensureFileExists(target_file);
 
-        // Format tag:
-        target_version = target_version.replace(/^refs\/tags\/v/, "");
-
         // Update project file:
         switch (target_file) {
             case "package.json":
-                updatePackageJson(target_version);
+                updatePackageJson(tag);
                 break;
             case "pyproject.toml":
-                updatePyProjectToml(target_version);
+                updatePyProjectToml(tag);
                 break;
             default:
                 throw new Error(`Unsupported file: ${target_file}`);
@@ -110,7 +112,7 @@ const main = async () => {
 
         // Commit and push:
         await exec.exec("git", ["add", "--all"]);
-        await exec.exec("git", ["commit", "-am", `Update version to ${target_version}`]);
+        await exec.exec("git", ["commit", "-am", `Update version to ${tag}`]);
         await exec.exec('git', ['push', remote, `HEAD:${metadata.branch}`, '--force']);
 
     } catch (error) {
