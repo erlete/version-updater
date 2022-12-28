@@ -5,7 +5,7 @@ const fs = require("fs");
 
 const REGEXPRS = {
     "package.json": /\"version\":(\s*)\"(.*)\"/,
-    "pyproject.toml": /version = \"(.*)\"/
+    "pyproject.toml": /version(\s+|\s?)=(\s+|\s?)("?)(([0-9]+(\.?))+)("?)/
 }
 
 
