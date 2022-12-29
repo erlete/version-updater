@@ -82,6 +82,14 @@ function ensureValidTag(ref_type, ref_name, ref_protected) {
     }
 }
 
+function parseCommitMessage(message) {
+    let parsed = message;
+    for (const [key, value] of Object.entries(COMMIT_PARSERS)) {
+        parsed = parsed.replace(`{${key}}`, value);
+    }
+    return parsed;
+}
+
 const main = async () => {
     try {
         // Validate conditions:
@@ -123,7 +131,7 @@ const main = async () => {
 
         // Commit and push:
         await exec.exec("git", ["add", "--all"]);
-        await exec.exec("git", ["commit", "-a", "-m", commit_title, "-m", commit_description]);
+        await exec.exec("git", ["commit", "-a", "-m", parseCommitMessage(commit_title), "-m", parseCommitMessage(commit_description)]);
         await exec.exec('git', ['push', remote, `HEAD:${METADATA.branch}`, '--force']);
 
     } catch (error) {
