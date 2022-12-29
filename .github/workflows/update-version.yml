@@ -17,3 +17,5 @@ jobs:
       - uses: ./
         with:
           target-file: "package.json"
+          git-name: "Paulo Sánchez"
+          git-email: "dev.szblzpaulo@gmail.com"
