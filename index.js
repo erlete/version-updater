@@ -10,7 +10,7 @@ const METADATA = {
     "token": process.env.GITHUB_TOKEN,
     "event_name": process.env.GITHUB_EVENT_NAME,
     "event_type": github.context.payload.action,
-    "ref_name":process.env.GITHUB_REF_NAME,
+    "ref_name": process.env.GITHUB_REF_NAME,
     "ref_type": process.env.GITHUB_REF_TYPE,
     "ref_protection": process.env.GITHUB_REF_PROTECTED,
     "release_name": github.context.payload.release.name,
@@ -63,22 +63,37 @@ async function updatePyProjectToml(tag) {
 
 function ensureReleaseEvent(event_name, event_type) {
     if (event_name !== "release") {
-        throw new Error(`The "${event_name}" event is not supported. Only "release" events are.`);
+        throw new Error(
+            `The "${event_name}" event is not supported. `
+            + "Only \"release\" events are supported."
+        );
     }
     if (event_type !== "published") {
-        throw new Error(`The "${event_type}" release event is not supported. Only "published" release events are.`);
+        throw new Error(
+            `The "${event_type}" release event is not supported. `
+            + "Only \"published\" release events are."
+        );
     }
 }
 
 function ensureValidTag(ref_type, ref_name, ref_protected) {
     if (ref_type !== "tag") {
-        throw new Error(`Reference type "${ref_type}" does not refer to a release. Only "tag" reference types are supported.`);
+        throw new Error(
+            `Reference type "${ref_type}" does not refer to a release. `
+            + "Only \"tag\" reference types are supported."
+        );
     }
     if (!ref_name.match(REGEXPRS["tag-format"])) {
-        throw new Error(`Reference name "${ref_name}" does not match regular expression /${REGEXPRS["tag-format"]}/.`);
+        throw new Error(
+            `Reference name "${ref_name}" does not match regular expression `
+            + `/${REGEXPRS["tag-format"]}/.`
+        );
     }
     if (ref_protected !== "false") {
-        throw new Error(`The reference is protected. Only unprotected references are supported.`);
+        throw new Error(
+            `The reference is protected. `
+            + "Only unprotected references are supported."
+        );
     }
 }
 
@@ -94,7 +109,8 @@ const main = async () => {
     try {
         // Validate conditions:
         ensureReleaseEvent(METADATA.event_name, METADATA.event_type);
-        ensureValidTag(METADATA.ref_type, METADATA.ref_name, METADATA.ref_protection);
+        ensureValidTag(METADATA.ref_type, METADATA.ref_name,
+            METADATA.ref_protection);
 
         // Extract numeric format tag:
         const tag = METADATA.ref_name.substring(1);
@@ -123,16 +139,24 @@ const main = async () => {
         }
 
         // Set remote repository with token access:
-        const remote = `https://${METADATA.author}:${METADATA.token}@github.com/${METADATA.repository}.git`;
+        const remote = (
+            `https://${METADATA.author}:${METADATA.token}@github.com`
+            + `/${METADATA.repository}.git`
+        );
 
         // Configure git:
         await exec.exec("git", ["config", "user.email", git_email]);
         await exec.exec("git", ["config", "user.name", git_name]);
 
-        // Commit and push:
+        // Add, commit and push:
         await exec.exec("git", ["add", "--all"]);
-        await exec.exec("git", ["commit", "-a", "-m", parseCommitMessage(commit_title), "-m", parseCommitMessage(commit_description)]);
-        await exec.exec('git', ['push', remote, `HEAD:${METADATA.branch}`, '--force']);
+        await exec.exec("git", [
+            "commit", "-a", "-m", parseCommitMessage(commit_title),
+            "-m", parseCommitMessage(commit_description)
+        ]);
+        await exec.exec("git", [
+            "push", remote, `HEAD:${METADATA.branch}`, "--force"
+        ]);
 
     } catch (error) {
         core.setFailed(error.message);
