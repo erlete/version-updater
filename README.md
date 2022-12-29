@@ -60,7 +60,7 @@ This action does not have any outputs, except for a smile in your face when it w
 **Example 1 (standard):**
 
 ```yml
-uses: erlete/version-updater@v1.1
+uses: erlete/version-updater@v2.0
 with:
   target-file: "package.json"
 ```
@@ -68,7 +68,7 @@ with:
 **Example 2 (customized):**
 
 ```yml
-uses: erlete/version-updater@v1.1
+uses: erlete/version-updater@v2.0
 with:
   target-file: "package.json"
   commit-title: "Bump version"
@@ -94,7 +94,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: erlete/version-updater@v1.1
+      - uses: erlete/version-updater@v2.0
         with:
           target-file: "package.json"
 ```
