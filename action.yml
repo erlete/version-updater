@@ -5,11 +5,11 @@ inputs:
   git-email:
     description: "Email used for the commit used to update the version."
     required: false
-    default: "action@github.com"
+    default: "github-actions[bot]@users.noreply.github.com"
   git-name:
     description: "Name used for the commit used to update the version."
     required: false
-    default: "GitHub Action"
+    default: "GitHub Actions"
   target-file:
     description: "The file that contains package metadata."
     required: true
