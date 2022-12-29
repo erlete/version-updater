@@ -1,11 +1,10 @@
 name: Update README
 
 on:
-  release:
+  workflow_run:
+    workflows: ["Update package version"]
     types:
-      - published
-    branches:
-      - stable
+      - completed
 
 jobs:
   update-readme:
