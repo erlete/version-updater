@@ -4,8 +4,9 @@ const fs = require("fs");
 
 
 const REGEXPRS = {
-    "package.json": /"version"(\s+|\s?):(\s+|\s?)"(([0-9]+(\.?))+)"/,
-    "pyproject.toml": /version(\s+|\s?)=(\s+|\s?)("?)(([0-9]+(\.?))+)("?)/
+    "tag-format": /v(([0-9]+(\.?))+)/,
+    "package.json": /"version"(\s*):(\s*)"(([0-9]+(\.?))+)"/,
+    "pyproject.toml": /version(\s*)=(\s*)("?)(([0-9]+(\.?))+)("?)/
 }
 
 
@@ -51,8 +52,8 @@ function ensureValidTag(ref_type, ref_name, ref_protected) {
     if (ref_type !== "tag") {
         throw new Error(`Reference type "${ref_type}" does not refer to a release. Only "tag" reference types are supported.`);
     }
-    if (!ref_name.match(/^refs\/tags\/v[0-9]+(\.[0-9]+)*$/)) {
-        throw new Error(`Reference name "${ref_name}" does not match regular expression "refs/tags/v[0-9]+(\.[0-9]+)*".`);
+    if (!ref_name.match(REGEXPRS["tag-format"])) {
+        throw new Error(`Reference name "${ref_name}" does not match regular expression /${REGEXPRS["tag-format"]}/.`);
     }
     if (ref_protected !== "false") {
         throw new Error(`The reference is protected. Only unprotected references are supported.`);
