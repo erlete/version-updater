@@ -20,7 +20,7 @@ inputs:
   commit-description:
     description: "The description of the commit used to update the version."
     required: false
-    default: "The version of the package was updated to `{version}` based on the release triggered by @{author} in the `{branch}` branch."
+    default: "The version of the package was updated to {version} based on the release triggered by @{author} in the {branch} branch."
 runs:
   using: "node16"
   main: "dist/index.js"
