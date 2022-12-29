@@ -29,11 +29,11 @@ Once a release is published, the action will update the version of a metadata fi
 
 | Input | Description | Required | Default value |
 | --- | --- | --- | --- |
-| `target-file` | The path to the metadata file to update. | Yes | - |
-| `commit-title` | The title of the commit to create. | No | `"Update version to {version}"` |
-| `commit-description` | The description of the commit to create. | No | `"The version of the package was updated to {version} based on the release triggered by @{author} in the {branch} branch."` |
-| `git-name` | The name of the user to use when committing the changes. | No | `"GitHub Actions"` |
-| `git-email` | The email of the user to use when committing the changes. | No | `"github-actions[bot]@users.noreply.github.com"` |
+| `target-file` | The path to the metadata file to update | Yes | - |
+| `commit-title` | The title of the commit to create | No | `"Update version to {version}"` |
+| `commit-description` | The description of the commit to create | No | `"The version of the package was updated to {version} based on the release triggered by @{author} in the {branch} branch."` |
+| `git-name` | The name of the user to use when committing the changes | No | `"GitHub Actions"` |
+| `git-email` | The email of the user to use when committing the changes | No | `"github-actions[bot]@users.noreply.github.com"` |
 
 ### Commit title and description
 
