@@ -1,7 +1,7 @@
 {
   "name": "version-updater",
   "version": "1.0.0",
-  "description": "Simple version updater for GitHub Actions.",
+  "description": "The definitive package metadata file version updater for GitHub Actions",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,11 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/erlete/version-updater.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["version", "package.json", "metadata", "updater", "github", "actions"],
+  "author": "Paulo Sanchez <dev.szblzpaulo@gmail.com> (https://github.com/erlete)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/erlete/version-updater/issues"
+    "url": "https://github.com/erlete/version-updater/issues",
+    "email": "dev.szblzpaulo@gmail.com"
   },
   "homepage": "https://github.com/erlete/version-updater#readme",
   "dependencies": {

@@ -1,4 +1,4 @@
-name: Compile index.js
+name: Compile index
 
 on:
   push:
@@ -8,9 +8,7 @@ on:
       - dev
 
 jobs:
-
   compile-index:
-
     runs-on: ubuntu-latest
     name: Index compilation
 
@@ -21,12 +19,10 @@ jobs:
       - name: Install npm
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: "16"
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install -g @vercel/ncc
+        run: npm install && npm install -g @vercel/ncc
 
       - name: Compile index.js
         run: ncc build index.js --license licenses.txt
@@ -37,6 +33,4 @@ jobs:
           git config --global user.name "Paulo Sánchez"
 
       - name: Commit index.js compiled file
-        run: |
-          git commit -am "Compile index.js"
-          git push
+        run: git commit -am "Compile index.js" && git push
