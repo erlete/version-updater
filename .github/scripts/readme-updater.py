@@ -26,7 +26,7 @@ with open(FILE, mode='r', encoding="utf-8") as f:
 
 with open(FILE, mode='w', encoding="utf-8") as f:
     f.write(re.sub(
-        r"actions\/version-updater-action@v(([0-9]+)|(\.[0-9]+))+",
-        f"actions/version-updater-action@{VERSION}",
+        r"erlete\/version-updater@v(([0-9]+)|(\.[0-9]+))+",
+        f"erlete/version-updater@{VERSION}",
         data
     ))

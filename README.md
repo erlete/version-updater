@@ -59,16 +59,16 @@ This action does not have any outputs, except for a smile in your face when it w
 
 **Example 1 (standard):**
 
-```yaml
-uses: actions/version-updater-action@v1.1
+```yml
+uses: erlete/version-updater@v1.1
 with:
   target-file: "package.json"
 ```
 
 **Example 2 (customized):**
 
-```yaml
-uses: actions/version-updater-action@v1.1
+```yml
+uses: erlete/version-updater@v1.1
 with:
   target-file: "package.json"
   commit-title: "Bump version"
@@ -79,7 +79,7 @@ with:
 
 ### Complete implementation
 
-```yaml
+```yml
 name: Update package version
 
 on:
@@ -94,7 +94,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/version-updater-action@v1.1
+      - uses: erlete/version-updater@v1.1
         with:
           target-file: "package.json"
 ```
