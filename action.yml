@@ -10,15 +10,17 @@ inputs:
     description: "Name used for git commits."
     required: false
     default: "GitHub Action"
-  target-version:
-    description: "The version to update the metadata file to."
-    required: true
   target-file:
     description: "The file that contains package metadata."
     required: true
-  target-branch:
-    description: "The branch to commit the update to."
-    required: true
+  commit-title:
+    description: "The title of the commit used to update the version."
+    required: false
+    default: "Update version to {version}"
+  commit-description:
+    description: "The description of the commit used to update the version."
+    required: false
+    default: "The version of the package was updated to `{version}` based on the release triggered by @{author} in the `{branch}` branch."
 runs:
   using: "node16"
   main: "dist/index.js"

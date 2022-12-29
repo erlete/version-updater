@@ -75,7 +75,15 @@ const main = async () => {
             "ref_type": process.env.GITHUB_REF_TYPE,
             "ref_protection": process.env.GITHUB_REF_PROTECTED,
             "release_name": payload.release.name,
+            "release_body": payload.release.body
         };
+        const commit_parsing = {
+            "author": metadata.author,
+            "branch": metadata.branch,
+            "version": metadata.ref_name,
+            "release_title": metadata.release_name,
+            "release_description": metadata.release_body
+        }
 
         // Validate conditions:
         ensureReleaseEvent(metadata.event_name, metadata.event_type);
@@ -88,6 +96,9 @@ const main = async () => {
         const git_email = core.getInput("git-email");
         const git_name = core.getInput("git-name");
         const target_file = core.getInput("target-file");
+
+        const commit_title = core.getInput("commit-title");
+        const commit_description = core.getInput("commit-description");
 
         // Ensure file exists:
         ensureFileExists(target_file);
@@ -105,7 +116,7 @@ const main = async () => {
         }
 
         // Set remote repository with token access:
-        const remote = `https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/${process.env.GITHUB_REPOSITORY}.git`;
+        const remote = `https://${metadata.author}:${metadata.token}@github.com/${metadata.repository}.git`;
 
         // Configure git:
         await exec.exec("git", ["config", "user.email", git_email]);
@@ -113,7 +124,7 @@ const main = async () => {
 
         // Commit and push:
         await exec.exec("git", ["add", "--all"]);
-        await exec.exec("git", ["commit", "-am", `Update version to ${tag}`]);
+        await exec.exec("git", ["commit", "-a", "-m", commit_title, "-m", commit_description]);
         await exec.exec('git', ['push', remote, `HEAD:${metadata.branch}`, '--force']);
 
     } catch (error) {
