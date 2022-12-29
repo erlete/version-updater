@@ -3,6 +3,28 @@ const exec = require("@actions/exec");
 const fs = require("fs");
 
 
+const METADATA = {
+    "author": process.env.GITHUB_TRIGGERING_ACTOR,
+    "branch": github.context.payload.release.target_commitish,
+    "repository": process.env.GITHUB_REPOSITORY,
+    "token": process.env.GITHUB_TOKEN,
+    "event_name": process.env.GITHUB_EVENT_NAME,
+    "event_type": github.context.payload.action,
+    "ref_name":process.env.GITHUB_REF_NAME,
+    "ref_type": process.env.GITHUB_REF_TYPE,
+    "ref_protection": process.env.GITHUB_REF_PROTECTED,
+    "release_name": github.context.payload.release.name,
+    "release_body": github.context.payload.release.body
+};
+
+const COMMIT_PARSERS = {
+    "author": METADATA.author,
+    "branch": METADATA.branch,
+    "version": METADATA.ref_name,
+    "release_title": METADATA.release_name,
+    "release_description": METADATA.release_body
+}
+
 const REGEXPRS = {
     "tag-format": /v(([0-9]+(\.?))+)/,
     "package.json": /"version"(\s*):(\s*)"(([0-9]+(\.?))+)"/,
@@ -62,35 +84,12 @@ function ensureValidTag(ref_type, ref_name, ref_protected) {
 
 const main = async () => {
     try {
-        // Relevant metadata definition:
-        const payload = github.context.payload;
-        const metadata = {
-            "author": process.env.GITHUB_TRIGGERING_ACTOR,
-            "branch": payload.release.target_commitish,
-            "repository": process.env.GITHUB_REPOSITORY,
-            "token": process.env.GITHUB_TOKEN,
-            "event_name": process.env.GITHUB_EVENT_NAME,
-            "event_type": payload.action,
-            "ref_name":process.env.GITHUB_REF_NAME,
-            "ref_type": process.env.GITHUB_REF_TYPE,
-            "ref_protection": process.env.GITHUB_REF_PROTECTED,
-            "release_name": payload.release.name,
-            "release_body": payload.release.body
-        };
-        const commit_parsing = {
-            "author": metadata.author,
-            "branch": metadata.branch,
-            "version": metadata.ref_name,
-            "release_title": metadata.release_name,
-            "release_description": metadata.release_body
-        }
-
         // Validate conditions:
-        ensureReleaseEvent(metadata.event_name, metadata.event_type);
-        ensureValidTag(metadata.ref_type, metadata.ref_name, metadata.ref_protection);
+        ensureReleaseEvent(METADATA.event_name, METADATA.event_type);
+        ensureValidTag(METADATA.ref_type, METADATA.ref_name, METADATA.ref_protection);
 
         // Extract numeric format tag:
-        const tag = metadata.ref_name.substring(1);
+        const tag = METADATA.ref_name.substring(1);
 
         // Retrieve inputs:
         const git_email = core.getInput("git-email");
@@ -116,7 +115,7 @@ const main = async () => {
         }
 
         // Set remote repository with token access:
-        const remote = `https://${metadata.author}:${metadata.token}@github.com/${metadata.repository}.git`;
+        const remote = `https://${METADATA.author}:${METADATA.token}@github.com/${METADATA.repository}.git`;
 
         // Configure git:
         await exec.exec("git", ["config", "user.email", git_email]);
@@ -125,7 +124,7 @@ const main = async () => {
         // Commit and push:
         await exec.exec("git", ["add", "--all"]);
         await exec.exec("git", ["commit", "-a", "-m", commit_title, "-m", commit_description]);
-        await exec.exec('git', ['push', remote, `HEAD:${metadata.branch}`, '--force']);
+        await exec.exec('git', ['push', remote, `HEAD:${METADATA.branch}`, '--force']);
 
     } catch (error) {
         core.setFailed(error.message);
