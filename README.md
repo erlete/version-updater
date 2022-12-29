@@ -35,6 +35,20 @@ Once a release is published, the action will update the version of a metadata fi
 | `git-name` | The name of the user to use when committing the changes. | No | `"GitHub Actions"` |
 | `git-email` | The email of the user to use when committing the changes. | No | `"github-actions[bot]@users.noreply.github.com"` |
 
+### Commit title and description
+
+The commit title and description can be customized using the `commit-title` and `commit-description` inputs. These inputs support the following placeholders:
+
+| Placeholder | Description |
+| ----------- | ----------- |
+| `{author}` | Name of the user who triggered the release |
+| `{branch}` | Name of the branch where the release was triggered |
+| `{version}` | Tag of the release |
+| `{release_title}` | Title of the release |
+| `{release_description}` | Description of the release |
+
+_The curly braces (`{}`) are required to use the placeholders. If an unlisted placeholder is used, the raw placeholder will be used instead._
+
 ## Outputs
 
 This action does not have any outputs, except for a smile in your face when it works.
