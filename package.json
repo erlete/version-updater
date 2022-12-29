@@ -1,6 +1,6 @@
 {
   "name": "version-updater",
-  "version": "1.0.0",
+  "version": "2.0",
   "description": "The definitive package metadata file version updater for GitHub Actions",
   "main": "index.js",
   "scripts": {
