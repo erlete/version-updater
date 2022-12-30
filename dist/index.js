@@ -10774,6 +10774,14 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 9341:
+/***/ ((module) => {
+
+module.exports = eval("require")("@iarna/toml");
+
+
+/***/ }),
+
 /***/ 7516:
 /***/ ((module) => {
 
@@ -10979,6 +10987,7 @@ const core = __nccwpck_require__(8045);
 const exec = __nccwpck_require__(8251);
 const github = __nccwpck_require__(7652);
 const fs = __nccwpck_require__(7147);
+const toml = __nccwpck_require__(9341)
 
 
 const METADATA = {
@@ -11003,12 +11012,6 @@ const COMMIT_PARSERS = {
     "release_description": METADATA.release_body
 }
 
-const REGEXPRS = {
-    "tag-format": /v(([0-9]+(\.?))+)/,
-    "package.json": /"version"(\s*):(\s*)"(([0-9]+(\.?))+)"/,
-    "pyproject.toml": /version(\s*)=(\s*)("?)(([0-9]+(\.?))+)("?)/
-}
-
 
 function ensureFileExists(filename) {
     if (!fs.existsSync(filename)) {
@@ -11016,27 +11019,27 @@ function ensureFileExists(filename) {
     }
 }
 
-function updateFile(filename, replacement) {
-    let data = fs.readFileSync(filename, "utf8");
-    data = data.replace(REGEXPRS[filename], replacement);
-    fs.writeFileSync(filename, data, "utf8");
-}
-
 async function updatePackageJson(tag) {
-    const filename = "package.json";
+    const filenames = ["package.json", "package-lock.json"];
 
     // Update package.json version:
-    updateFile(filename, `"version": "${tag}"`);
+    let data_1 = JSON.parse(fs.readFileSync(filenames[0], "utf8"));
+    data_1.version = tag;
+    fs.writeFileSync(filenames[0], JSON.stringify(data_1, null, 4));
 
     // Update package-lock.json version:
-    await exec.exec("npm", ["install"]);
+    let data_2 = JSON.parse(fs.readFileSync(filenames[1], "utf8"));;
+    data_2.version = data_2.packages[''].version = tag;
+    fs.writeFileSync(filenames[1], JSON.stringify(data_2, null, 4));
 }
 
 async function updatePyProjectToml(tag) {
     const filename = "pyproject.toml";
 
     // Update pyproject.toml version:
-    updateFile(filename, `version = "${tag}"`);
+    let data = toml.parse(fs.readFileSync(filename, "utf8"));
+    data.project.version = tag;
+    fs.writeFileSync(filename, toml.stringify(data));
 }
 
 function ensureReleaseEvent(event_name, event_type) {
@@ -11061,10 +11064,10 @@ function ensureValidTag(ref_type, ref_name, ref_protected) {
             + "Only \"tag\" reference types are supported."
         );
     }
-    if (!ref_name.match(REGEXPRS["tag-format"])) {
+    if (!ref_name.match(/v(([0-9]+(\.?))+)/)) {
         throw new Error(
             `Reference name "${ref_name}" does not match regular expression `
-            + `/${REGEXPRS["tag-format"]}/.`
+            + `/v(([0-9]+(\.?))+)/.`
         );
     }
     if (ref_protected !== "false") {
